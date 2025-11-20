@@ -1,6 +1,6 @@
-FROM php:8.1-fpm
+FROM php:8.2-fpm
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     zip \
@@ -8,7 +8,10 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     libonig-dev \
-    libxml2-dev
+    libxml2-dev \
+    libcurl4-openssl-dev \
+    pkg-config \
+    libssl-dev
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd
@@ -22,7 +25,7 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
-# Install Laravel dependencies
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
 # Optimize Laravel
